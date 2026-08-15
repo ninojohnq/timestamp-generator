@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Timemark Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-mark">T</div>
+  <h1>Time<span>mark</span> Generator</h1>
+  <div class="tag">Runs 100% in your browser</div>
+</div>
+
+<div class="app">
+  <!-- ================= SETTINGS PANEL ================= -->
+  <div class="panel">
+
+    <div class="privacy">
+      <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span><b style="color:var(--txt)">Your photos stay on your device.</b> Images are processed locally in your browser and are never uploaded.</span>
+    </div>
+
+    <!-- PHOTO -->
+    <details class="card" open>
+      <summary><span class="dot"></span>Photo<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div id="dropzone" class="dropzone">
+          <div class="ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+          <strong>Click to upload</strong> or drag &amp; drop
+          <small>JPG · PNG · WEBP</small>
+        </div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden />
+        <div id="photoInfo" style="display:none;">
+          <div class="thumb-row">
+            <img id="thumb" class="thumb" alt="" />
+            <div class="thumb-meta"><b id="photoName">photo.jpg</b><span id="photoDims">—</span></div>
+          </div>
+          <div class="row" style="margin-top:12px;">
+            <button class="btn small" id="replaceBtn">Replace</button>
+            <button class="btn small danger" id="removeBtn">Remove</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- DATE & TIME -->
+    <details class="card" open>
+      <summary><span class="dot"></span>Date &amp; Time<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="row">
+          <div class="field"><label>Date</label><input type="date" id="dateInput" /></div>
+          <div class="field"><label>Time</label><input type="time" id="timeInput" /></div>
+        </div>
+        <div class="field"><button class="btn small" id="nowBtn">Use current date &amp; time</button></div>
+        <div class="toggle"><span>Show AM / PM on large time</span>
+          <label class="switch"><input type="checkbox" id="showAmpm" /><span class="slider-sw"></span></label>
+        </div>
+        <div class="hint">Weekday is derived automatically from the date.</div>
+      </div>
+    </details>
+
+    <!-- LOCATION -->
+    <details class="card" open>
+      <summary><span class="dot"></span>Location<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="field"><label>Location line 1</label><input type="text" id="locationLine1" placeholder="Street / area" /></div>
+        <div class="field"><label>Location line 2</label><input type="text" id="locationLine2" placeholder="City, ZIP" /></div>
+        <div class="field"><button class="btn small ghost" id="geoBtn">Use my location (coordinates)</button></div>
+        <div class="hint">Reverse geocoding needs an API, so manual entry is the primary option. Geolocation only fills in coordinates.</div>
+      </div>
+    </details>
+
+    <!-- CREDIT -->
+    <details class="card">
+      <summary><span class="dot"></span>Credit<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="toggle"><span>Show photo credit</span>
+          <label class="switch"><input type="checkbox" id="showCredit" checked /><span class="slider-sw"></span></label>
+        </div>
+        <div class="toggle"><span>Use Timemark branding</span>
+          <label class="switch"><input type="checkbox" id="useBrand" checked /><span class="slider-sw"></span></label>
+        </div>
+        <div class="field"><label>Credit name (when branding is off)</label><input type="text" id="creditName" placeholder="Niño John Quijano" /></div>
+      </div>
+    </details>
+
+    <!-- VERIFICATION -->
+    <details class="card">
+      <summary><span class="dot"></span>Verification<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="toggle"><span>Show verification label</span>
+          <label class="switch"><input type="checkbox" id="showVerif" checked /><span class="slider-sw"></span></label>
+        </div>
+        <div class="field"><label>Verification code</label><input type="text" id="verifCode" placeholder="KP9K4RUMRE1LGM" /></div>
+        <div class="field"><button class="btn small" id="newCodeBtn">Generate new code</button></div>
+      </div>
+    </details>
+
+    <!-- LOGO -->
+    <details class="card">
+      <summary><span class="dot"></span>Logo (optional)<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="field"><button class="btn small" id="logoUploadBtn">Upload logo (PNG / WEBP)</button></div>
+        <input type="file" id="logoInput" accept="image/png,image/webp" hidden />
+        <div class="toggle"><span>Show logo</span>
+          <label class="switch"><input type="checkbox" id="showLogo" /><span class="slider-sw"></span></label>
+        </div>
+        <div class="range"><div class="rhead">Logo size <b><span id="logoSizeVal">120</span>px</b></div><input type="range" id="logoSize" min="40" max="360" value="120" /></div>
+        <div class="range"><div class="rhead">Logo opacity <b><span id="logoOpacityVal">100</span>%</b></div><input type="range" id="logoOpacity" min="10" max="100" value="100" /></div>
+        <div class="row" style="margin-top:6px;"><button class="btn small ghost danger" id="removeLogoBtn">Remove logo</button></div>
+      </div>
+    </details>
+
+    <!-- ADVANCED -->
+    <details class="card">
+      <summary><span class="dot"></span>Advanced settings<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+
+        <div class="divider-lbl">Typography (at 1200px reference)</div>
+        <div class="range"><div class="rhead">Time size <b><span id="timeFontVal">112</span></b></div><input type="range" id="timeFont" min="70" max="150" value="112" /></div>
+        <div class="range"><div class="rhead">Date size <b><span id="dateFontVal">40</span></b></div><input type="range" id="dateFont" min="24" max="60" value="40" /></div>
+        <div class="range"><div class="rhead">Weekday size <b><span id="weekFontVal">38</span></b></div><input type="range" id="weekFont" min="22" max="58" value="38" /></div>
+        <div class="range"><div class="rhead">Location size <b><span id="locFontVal">39</span></b></div><input type="range" id="locFont" min="24" max="60" value="39" /></div>
+        <div class="range"><div class="rhead">Location line spacing <b><span id="locLHVal">48</span></b></div><input type="range" id="locLH" min="34" max="70" value="48" /></div>
+
+        <div class="divider-lbl">Colors</div>
+        <div class="field"><label>Text color</label><div class="color-row"><input type="color" id="textColor" value="#ffffff" /><input type="text" id="textColorHex" value="#ffffff" /></div></div>
+        <div class="field"><label>Divider color</label><div class="color-row"><input type="color" id="dividerColor" value="#e7b41f" /><input type="text" id="dividerColorHex" value="#e7b41f" /></div></div>
+        <div class="field"><label>Brand color</label><div class="color-row"><input type="color" id="brandColor" value="#d9de28" /><input type="text" id="brandColorHex" value="#d9de28" /></div></div>
+
+        <div class="divider-lbl">Legibility</div>
+        <div class="range"><div class="rhead">Shadow strength <b><span id="shadowVal">75</span>%</b></div><input type="range" id="shadowStrength" min="0" max="100" value="75" /></div>
+        <div class="range"><div class="rhead">Outline strength <b><span id="outlineVal">55</span>%</b></div><input type="range" id="outlineStrength" min="0" max="100" value="55" /></div>
+        <div class="range"><div class="rhead">Overall text opacity <b><span id="opacityVal">100</span>%</b></div><input type="range" id="textOpacity" min="30" max="100" value="100" /></div>
+
+        <div class="divider-lbl">Position offsets (px @1200)</div>
+        <div class="row">
+          <div class="field"><label>Timestamp X</label><input type="text" id="tsX" value="0" inputmode="numeric" /></div>
+          <div class="field"><label>Timestamp Y</label><input type="text" id="tsY" value="0" inputmode="numeric" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Credit X</label><input type="text" id="crX" value="0" inputmode="numeric" /></div>
+          <div class="field"><label>Credit Y</label><input type="text" id="crY" value="0" inputmode="numeric" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Verify X</label><input type="text" id="vfX" value="0" inputmode="numeric" /></div>
+          <div class="field"><label>Verify Y</label><input type="text" id="vfY" value="0" inputmode="numeric" /></div>
+        </div>
+
+        <div class="field" style="margin-top:16px;"><button class="btn small ghost" id="resetBtn">Reset to reference defaults</button></div>
+      </div>
+    </details>
+
+    <div class="savebar">
+      <button class="btn-accent" id="saveBtn">Save Photo</button>
+      <div class="save-format">
+        <select id="exportFormat">
+          <option value="jpeg">JPEG · smaller file</option>
+          <option value="png">PNG · lossless</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PREVIEW STAGE ================= -->
+  <div class="stage">
+    <div class="preview-wrap">
+      <canvas id="previewCanvas"></canvas>
+      <div class="empty-stage" id="emptyStage">
+        <div class="ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <h2>Upload a photo to begin</h2>
+        <p>Your timestamp, location and Timemark verification watermark will render here in real time.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-save"><button class="btn-accent" id="saveBtnMobile">Save Photo</button></div>
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
