@@ -14,10 +14,14 @@
 <div class="topbar">
   <div class="logo-mark">T</div>
   <h1>Time<span>mark</span> Generator</h1>
+  <div class="tabbar">
+    <button class="tab-btn active" id="tabTimestamp" type="button">Timestamp</button>
+    <button class="tab-btn" id="tabEod" type="button">EOD Report</button>
+  </div>
   <div class="tag">Runs 100% in your browser</div>
 </div>
 
-<div class="app">
+<div class="app" id="timestampView">
   <!-- ================= SETTINGS PANEL ================= -->
   <div class="panel">
 
@@ -182,8 +186,56 @@
 </div>
 
 <div class="mobile-save"><button class="btn-accent" id="saveBtnMobile">Save Photo</button></div>
+
+<!-- ================= EOD REPORT VIEW ================= -->
+<div class="app" id="eodView" style="display:none;">
+  <div class="panel">
+    <div class="privacy">
+      <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span><b style="color:var(--txt)">Nothing is uploaded anywhere.</b> Your report is built into an .xlsx file locally and downloaded straight to your device.</span>
+    </div>
+
+    <details class="card" open>
+      <summary><span class="dot"></span>Report details<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></summary>
+      <div class="card-body">
+        <div class="field"><label>Name</label><input type="text" id="eodName" placeholder="Full name" /></div>
+        <div class="field"><label>Date</label><input type="date" id="eodDate" /></div>
+        <div class="field"><label>Morning task (8:00 AM – 12:00 PM)</label><textarea id="eodMorning" rows="6" placeholder="What did you work on this morning?"></textarea></div>
+        <div class="field"><label>Afternoon task (1:00 PM – 5:00 PM)</label><textarea id="eodAfternoon" rows="6" placeholder="What did you work on this afternoon?"></textarea></div>
+      </div>
+    </details>
+
+    <div class="savebar">
+      <button class="btn-accent" id="eodDownloadBtn">Download EOD Report (.xlsx)</button>
+    </div>
+  </div>
+
+  <!-- ================= EOD PREVIEW STAGE ================= -->
+  <div class="stage">
+    <div class="eod-sheet-wrap">
+      <div class="eod-sheet">
+        <div class="eod-head">
+          <img src="assets/fil-global-logo.png" class="eod-logo" alt="Fil-Global logo" />
+          <div class="eod-head-text">
+            <div class="eod-title">FIL-GLOBAL IMMIGRATION SERVICES CORPORATION</div>
+            <div class="eod-subtitle">SUPPORT WORK FROM HOME ACCOMPLISHMENT REPORT<br><span>(MD, Operations Manager, Marketing, People Ops, BOD, Finance and IT)</span></div>
+          </div>
+        </div>
+        <div class="eod-row"><div class="eod-label">NAME:</div><div class="eod-value" id="pvName">&nbsp;</div></div>
+        <div class="eod-row"><div class="eod-label">DATE:</div><div class="eod-value" id="pvDate">&nbsp;</div></div>
+        <div class="eod-bar">MORNING TASK (8:00 AM - 12:00 PM)</div>
+        <div class="eod-box" id="pvMorning"></div>
+        <div class="eod-bar">AFTERNOON TASK (1:00 PM - 5:00 PM)</div>
+        <div class="eod-box" id="pvAfternoon"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script src="eod.js"></script>
 </body>
 </html>
