@@ -193,9 +193,9 @@ async function downloadEod(){
   if(!morning && !afternoon){ toast('Fill in at least one task.'); return; }
   if(typeof ExcelJS === 'undefined'){ toast('Report library failed to load — check your connection.'); return; }
 
-  const btn = $('#eodDownloadBtn');
-  const prevLabel = btn.textContent;
-  btn.textContent = 'Building…'; btn.disabled = true;
+  const btns = [$('#eodDownloadBtn'), $('#eodDownloadBtnMobile')];
+  const prevLabels = btns.map(b=>b.textContent);
+  btns.forEach(b=>{ b.textContent = 'Building…'; b.disabled = true; });
 
   try{
     const wb = await buildEodWorkbook({ name, dateStr: eodFormatDate(date), morning, afternoon });
@@ -215,7 +215,7 @@ async function downloadEod(){
     console.error(err);
     toast('Could not build the file.');
   }finally{
-    btn.textContent = prevLabel; btn.disabled = false;
+    btns.forEach((b,i)=>{ b.textContent = prevLabels[i]; b.disabled = false; });
   }
 }
 
@@ -244,6 +244,7 @@ function initEod(){
   });
 
   $('#eodDownloadBtn').addEventListener('click', downloadEod);
+  $('#eodDownloadBtnMobile').addEventListener('click', downloadEod);
 
   let savedTab = null;
   try{ savedTab = localStorage.getItem(EOD_TAB_KEY); }catch(e){}
